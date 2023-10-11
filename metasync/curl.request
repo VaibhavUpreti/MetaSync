@@ -1,0 +1,19 @@
+curl -i -X POST -H "Accept: application/json" -H "Content-Type: application/json" http://localhost:8083/connectors/ -d '{
+  "name": "CircuitVersePostgres",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "tasks.max": "1",
+     "topic.prefix": "circuitverse_postgres",
+    "database.hostname": "postgres",
+    "database.port": "5432",
+    "database.user": "postgres",
+    "database.password": "postgres",
+    "database.dbname": "circuitverse_development",
+    "database.server.name": "server1",
+    "database.whitelist": "public.sales",
+    "database.history.kafka.bootstrap.servers": "kafka:9092",
+    "database.history.kafka.topic": "schema-changes.inventory",
+    "slot.name": "circuitverse_db"
+  }
+}'
+

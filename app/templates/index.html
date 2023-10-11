@@ -1,0 +1,22 @@
+{% extends "header.html" %}
+{% block content %}
+
+<h1>Welcome to the Home Page</h1>
+
+Dashboard Page
+<hr>
+
+hits = {{ hits }}
+
+{% if current_user.is_authenticated %}
+  
+
+Welcome to MetaSync
+
+Tryout new Dashboard for Integrations
+
+
+{% else %}
+        
+{% endif %}
+{% endblock %}

@@ -1,0 +1,46 @@
+version: '3'
+services:
+
+  kafka-cluster:
+    container_name: kafka-cluster
+    image: landoop/fast-data-dev
+    platform: linux/arm64
+    environment:
+      ADV_HOST: 127.0.0.1         
+      RUNTESTS: 0
+      CONNECTORS: metasync-postgres
+      AWS_ACCESS_KEY_ID: "ACCESS KEY GOES HERE "
+      AWS_SECRET_ACCESS_KEY: "SECRET KEY  GOES HERE "
+      SAMPLEDATA: 0
+    ports:
+      - 2181:2181                
+      - 3030:3030                
+      - 8081-8083:8081-8083
+      - 9581-9585:9581-9585         
+      - 9092:9092                   
+
+  postgres:
+    image: debezium/postgres:13-alpine 
+    platform: linux/arm64
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: circuitverse_development 
+
+  spark:
+    image: bitnami/spark 
+    platform: linux/arm64
+    environment:
+      SPARK_MODE: master
+    ports:
+      - '8080:8080'
+
+  spark-worker:
+    image: bitnami/spark 
+    platform: linux/arm64
+    environment:
+      SPARK_MODE: worker
+      SPARK_MASTER_URL: spark://spark:7077
+    depends_on:
+      - spark
+

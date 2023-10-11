@@ -1,0 +1,98 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="min-h-full">
+  <nav class="bg-white shadow-sm">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 justify-between">
+        <div class="-mr-2 flex items-center sm:hidden">
+          <button type="button" class="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" aria-controls="mobile-menu" aria-expanded="false">
+            <span class="sr-only">Open main menu</span>
+            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+            <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+  </nav>
+  <div class="py-10">
+    <header>
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold leading-tight tracking-tight text-gray-900">Connect DB instance</h1>
+      </div>
+    </header>
+    <main>
+      <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div class="px-4 py-8 sm:px-0">
+	<form class="space-y-8 divide-y divide-gray-200" action="#" method="POST">
+    <div class="pt-2">
+      <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+        <div class="sm:col-span-3">
+          <label for="host" class="block text-sm font-medium text-gray-700">Host</label>
+          <div class="mt-1">
+            <input type="text" name="host" id="host" autocomplete="given-name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <label for="port" class="block text-sm font-medium text-gray-700">Port</label>
+          <div class="mt-1">
+            <input type="text" name="port" id="port" autocomplete="family-name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+          </div>
+        </div>
+
+		<div class="sm:col-span-3">
+          <label for="user" class="block text-sm font-medium text-gray-700">User</label>
+          <div class="mt-1">
+            <input type="text" name="user" id="user" autocomplete="given-name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+			<label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+          <div class="mt-1">
+			  <input type="text" name="password" id="password" autocomplete="family-name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+          </div>
+        </div>
+
+		<div class="sm:col-span-3">
+			<label for="db_name" class="block text-sm font-medium text-gray-700">Database</label>
+          <div class="mt-1">
+			  <input type="text" name="db_name" id="db_name" autocomplete="family-name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+          </div>
+        </div>
+        <div class="sm:col-span-3">
+			<label for="adapter" class="block text-sm font-medium text-gray-700">Adapter</label>
+          <div class="mt-1">
+            <select id="adapter" name="adapter" autocomplete="country-name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+              <option>postgresql</option>
+              <option>mysql</option>
+              <option>redis</option>
+            </select>
+          </div>
+        </div>
+        <div class="sm:col-span-6">
+          <label for="notes" class="block text-sm font-medium text-gray-700">Notes</label>
+          <div class="mt-1">
+            <textarea id="notes" name="notes" rows="3" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
+          </div>
+          <p class="mt-2 text-sm text-gray-500">Additional Information about DB instance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pt-5">
+    <div class="flex justify-end">
+      <button type="button" class="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none ">Cancel</button>
+      <button type="submit" class="ml-3 inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700">Save</button>
+    </div>
+  </div>
+</form>
+      </div>
+    </main>
+  </div>
+</div>
+</div>
+{% endblock %}
