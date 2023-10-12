@@ -8,9 +8,9 @@ services:
     environment:
       ADV_HOST: 127.0.0.1         
       RUNTESTS: 0
-      CONNECTORS: metasync-postgres
-      AWS_ACCESS_KEY_ID: "ACCESS KEY GOES HERE "
-      AWS_SECRET_ACCESS_KEY: "SECRET KEY  GOES HERE "
+      CONNECTORS: debezium-postgres,s3
+      AWS_ACCESS_KEY_ID: ${AWS_S3_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_S3_SECRET_ACCESS_KEY}
       SAMPLEDATA: 0
     ports:
       - 2181:2181                
@@ -18,13 +18,19 @@ services:
       - 8081-8083:8081-8083
       - 9581-9585:9581-9585         
       - 9092:9092                   
+    volumes:
+      - ./target/plugin/:/connectors/
+    links:
+      - aws-s3
 
   postgres:
     image: debezium/postgres:13-alpine 
     platform: linux/arm64
+    ports:
+      - '5432:5432'
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: postgres 
       POSTGRES_DB: circuitverse_development 
 
   spark:
@@ -43,4 +49,15 @@ services:
       SPARK_MASTER_URL: spark://spark:7077
     depends_on:
       - spark
-
+ 
+  aws-s3:
+    image: localstack/localstack
+    platform: linux/arm64
+    container_name: aws-s3
+    environment:
+      SERVICES: s3:5001
+      HOSTNAME: aws-s3
+      AWS_ACCESS_KEY_ID: ${AWS_S3_ACCESS_KEY_ID} 
+      AWS_SECRET_ACCESS_KEY: ${AWS_S3_SECRET_ACCESS_KEY} 
+    ports:
+      - "5001:5001"

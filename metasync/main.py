@@ -51,5 +51,3 @@ def process_data(data):
 db_url = "postgresql://postgres:postgres@localhost:5432/circuitverse_production"
 add_db_stream(db_url)
 
-
-

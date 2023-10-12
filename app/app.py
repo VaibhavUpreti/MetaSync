@@ -12,6 +12,10 @@ import bcrypt
 #from flask_login import login_user, login_required, logout_user, LoginManager, UserMixin, current_user
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from sqlalchemy.dialects.postgresql import JSON
+import json
+import requests
+from faker import Faker
+
 
 login_manager = LoginManager()
 
@@ -21,7 +25,7 @@ app = Flask(__name__)
 app.secret_key = 'base64_32_digit_key'
 
 # DB config
-app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:postgres@localhost:5432/metasync_development'
+app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:postgres@0.0.0.0:5432/metasync_development'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
@@ -29,6 +33,11 @@ migrate = Migrate(app, db)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'users/registration'
+
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+    }
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -92,7 +101,7 @@ def sign_up():
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
-        return render_template('dashboard.html')
+        return render_template('index.html')
     else:
         return render_template('users/new.html')
 
@@ -101,8 +110,10 @@ def sign_up():
 def dashboard(user_id):
     
     connections = Connection.query.filter_by(user_id=current_user.id).all()
-
-    return render_template('dashboard.html', connections=connections)
+    plugins = requests.get("http://localhost:8083/connector-plugins/", headers=headers)
+    result = plugins.text
+    data = json.loads(result)
+    return render_template('dashboard.html', connections=connections, plugins=data)
 
 @app.route('/users/<int:user_id>/connections/new', methods=['GET', 'POST'])
 @login_required
@@ -115,24 +126,72 @@ def add_db_connection(user_id):
         password = request.form['password']
         db_name = request.form['db_name']
         notes = request.form['notes']
-
-        
-        cuser_id = current_user.id
-        new_connection = Connection(host=host,port=port, user=user, password=password, adapter=adapter, db_name=db_name, notes=notes)
-        new_connection.user_id = cuser_id
-        db.session.add(new_connection)
-        db.session.commit()
+        fake = Faker()
+        slot_name = fake.user_name()
+        debezium_config = {
+            "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+            "tasks.max": "1",
+            "topic.prefix": "postgres",
+            "database.user": user,
+            "database.dbname": db_name,
+            "database.hostname": "host.docker.internal", #host,
+            "database.password": password,
+            "database.server.name": "postgres",
+            "database.history.kafka.bootstrap.servers": "kafka:9092",
+            "database.history.kafka.topic": "schema-changes.inventory",
+            "database.port": port,
+            "plugin.name": "pgoutput",
+            "slot.name": slot_name
+        }
+        debezium_config_json = json.dumps(debezium_config) 
+        url = "http://localhost:8083/connectors"
+        random_name = fake.user_name()
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+            }
+        data = json.dumps({
+            "name": random_name,
+            "config": debezium_config 
+            })
+        response = requests.post(url, headers=headers, data=data)
+        if response.status_code == 201:
+            flash("Successfully added DB configuration.")
+            cuser_id = current_user.id
+            conn_name = random_name
+            new_connection = Connection(host=host,port=port, user=user, password=password, adapter=adapter, db_name=db_name, notes=notes, debezium_config=debezium_config_json, conn_name= conn_name)
+            new_connection.user_id = cuser_id
+            db.session.add(new_connection)
+            db.session.commit()
+            print("success")
+        else:
+            print("failure")
+            flash("Error adding DB configuration. Please check your settings.")
+        print(response.text)
         return redirect(url_for('dashboard', user_id = current_user.id))
     else:
         return render_template('connection/new.html')
 
-
-
-
-@app.route('/users/<int:user_id>/connections/realtime/new', methods=['GET', 'POST'])
+@app.route('/users/<int:user_id>/connections/<connection_name>', methods=['GET', 'POST'])
 @login_required
-def add_realtime_connection(user_id):
-    return render_template('connection/new.html')
+def show_connection(user_id, connection_name):
+    connection = Connection.query.filter_by(conn_name=connection_name)
+    url = "http://localhost:8083/connectors/" + connection_name
+    headers = {
+             "Accept": "application/json",
+    
+             "Content-Type": "application/json"
+        }
+    connectors = requests.get(url, headers=headers)
+    topics_url = "http://localhost:8083/connectors/" + connection_name + "/topics"
+    topics = requests.get(topics_url, headers=headers)
+
+    result = connectors.text
+    data = json.loads(result)
+    topics = json.loads(topics.text)
+    print(data)
+
+    return render_template('connection/show.html', connectors=result, data=data, topics=topics, connection=connection)
 
 # Models
 
@@ -176,6 +235,7 @@ class Connection(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
     adapter = db.Column(db.String(30), nullable=False)
+    conn_name = db.Column(db.String(100), nullable=False)
     # url = db.Column(db.String(200), nullable=False)
     host = db.Column(db.String(100), nullable=False)
     port = db.Column(db.Integer, nullable=False)
@@ -189,8 +249,9 @@ class Connection(db.Model, UserMixin):
     # Use a unique backref name like 'user_owned_connections'
     user_owned_connections = db.relationship('User', backref='connections')
 
-    def __init__(self, adapter, host, port, user, password, db_name, notes, debezium_config):
-        self.adapter = adapter 
+    def __init__(self, adapter, conn_name, host, port, user, password, db_name, notes, debezium_config):
+        self.adapter = adapter
+        self.conn_name = conn_name
         self.host = host
         self.port = port
         self.user = user 
