@@ -115,7 +115,7 @@ def dashboard(user_id):
     data = json.loads(result)
     return render_template('dashboard.html', connections=connections, plugins=data)
 
-@app.route('/users/<int:user_id>/connections/new', methods=['GET', 'POST'])
+@app.route('/users/<int:user_id>/connections/new', methods=['POST'])
 @login_required
 def add_db_connection(user_id):
     if request.method == 'POST':
@@ -141,7 +141,12 @@ def add_db_connection(user_id):
             "database.history.kafka.topic": "schema-changes.inventory",
             "database.port": port,
             "plugin.name": "pgoutput",
-            "slot.name": slot_name
+            "slot.name": slot_name,
+            "max.poll.records": "99999999999",
+            "log.cleaner.enable": "false",
+            "max.partition.fetch.bytes": "100000000000000000000000000000000",
+            "fetch.max.bytes": "5242880000000000000000000000000000",
+            "session.timeout.ms": "5000000000000000"
         }
         debezium_config_json = json.dumps(debezium_config) 
         url = "http://localhost:8083/connectors"
@@ -184,7 +189,7 @@ def show_connection(user_id, connection_name):
         }
     connectors = requests.get(url, headers=headers)
     topics_url = "http://localhost:8083/connectors/" + connection_name + "/topics"
-    topics = requests.get(topics_url, headers=headers)
+    topics = requests.post(topics_url, headers=headers)
 
     result = connectors.text
     data = json.loads(result)
@@ -193,6 +198,35 @@ def show_connection(user_id, connection_name):
 
     return render_template('connection/show.html', connectors=result, data=data, topics=topics, connection=connection)
 
+@app.route('/users/<int:user_id>/connections/add_s3_sink', methods=['POST'])
+def add_s3_sink(user_id):
+    url = "http://localhost:8083/connectors"
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+        }
+    s3_sink = {
+      "connector.class": "io.confluent.connect.s3.S3SinkConnector",
+      "s3.region": "us-west-2",
+      "flush.size": "1000",
+      "schema.compatibility": "NONE",
+      "topics": "postgres.public.users",
+      "tasks.max": "1",
+      "timezone": "UTC",
+      "s3.part.size": "5242880",
+      "locale": "PL",
+      "format.class": "io.confluent.connect.s3.format.json.JsonFormat",
+      "storage.class": "io.confluent.connect.s3.storage.S3Storage",
+      "s3.bucket.name": "circuitverse-development",
+      "rotate.schedule.interval.ms": "10000"
+    }
+    data = json.dumps({
+        "name": "s3-sink",
+        "config": s3_sink 
+        })
+    response = requests.post(url, headers=headers, data=data)
+    print(response.text)
+    return render_template('index.html') 
 # Models
 
 class User(db.Model, UserMixin):

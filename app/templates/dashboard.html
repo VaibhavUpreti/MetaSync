@@ -280,11 +280,14 @@ hits = {{ hits }}
         <div class="min-w-0 flex-1">
 			<h1 class="text-lg font-medium leading-6 text-gray-900 sm:truncate">Welcome 👋,  {{ current_user.username }}</h1>
         </div>
-
-        <div class="mt-4 flex sm:mt-0 sm:ml-4">
-
+        <div class=" flex sm:mt-0 sm:ml-4">
+		<form method="post" action="{{ url_for('add_s3_sink', user_id=current_user.id) }}">
+			<button type="submit" class="sm:order-0 order-1 mr-10 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
+				Add S3 Sink
+			</button>
+		</form>
           <a href="{{ url_for('add_db_connection', user_id=current_user.id) }}" class="sm:order-0 order-1 mr-10 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 ">Connect DB</a>
-        </div>
+		</div>
       </div>
 
 
