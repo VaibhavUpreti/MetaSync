@@ -1,2 +1,2 @@
-libraryDependencies += "org.postgresql" % "postgresql" % "YOUR_POSTGRESQL_VERSION"
+libraryDependencies += "org.postgresql" % "postgresql" % "13"
 
