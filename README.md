@@ -157,28 +157,35 @@ You can add more Kafka brokers to distribute the load, increase throughput, and 
 - Vertical Scalability: Vertical scalability for databases involves upgrading the hardware resources of individual database servers, such as increasing CPU, RAM, and storage capacity. Vertical scaling can help handle increased database write operations and complex queries.
 
 
-### Infrastructure
+## Infrastructure
 
-- Kafka(topics, schema registry, streams)
+**Kafka(topics, schema registry, streams)**
 
-- Spark Master and workers
+- Plays pivotal role in real-time data processing
 
-- Observability tools:
-    1. Prometheus, Grafana
-    2. Distributed Tracing(OpenTelemetry) 
+**Spark Master and workers**
 
-### Observability 
+- 
 
-- Prometheus & Grafana:
+**Observability tools**
 
-To track the ingestion rate, data reliability, and query performance.
+-  Prometheus, Grafana: To track the ingestion rate,monitoring metrics related to data consistency, errors, system health, Query performance. Visualize using Grafana
 
-- Distributed Tracing(OpenTelemetry):
+-  Distributed Tracing(OpenTelemetry): Trace requests from ingrestion to consumption to identify slow points and bottlenecks in the ETL data processing pipeline.
 
-OpenTelemetry to trace the path of data from ingestion to consumption, allowing find slow points and bottlenecks.
 
-[Distributed Tracing](https://vaibhavupreti.me/blog/distributed-tracing-opentelemetry/)
+## Observability 
 
+**Prometheus & Grafana:**
+
+- To track the ingestion rate, data reliability, and query performance.
+
+**Distributed Tracing(OpenTelemetry):**
+
+- OpenTelemetry to trace the path of data from ingestion to consumption, allowing find slow points and bottlenecks [Vaibhav Upreti's Blog](https://vaibhavupreti.me/blog/distributed-tracing-opentelemetry/)
+
+
+## Alternates Considered
 ## Future Prospects
 
 - Relase in a plugin fashion
