@@ -34,29 +34,31 @@ https://github.com/VaibhavUpreti/MetaSync/assets/85568177/b2d25975-946c-41c2-9b3
 
 > A prospect has a metadata estate spanning 1B metadata assets. While the bulk of this payload is columns in different tables and BI fields (~90% of total), the remaining 10% consists of assets such as databases, schemas, tables, and dashboards. They want to ingest metadata using Atlan’s metadata extraction with an 80-20 rule, where columns become eventually consistent in the metadata lake.
 
-Metasync leverages a robust architecture and a range of cutting-edge technologies to provide a comprehensive solution to this problem:
 
-Real-time Data Ingestion: Metasync employs Kafka topics to enable real-time data ingestion from the source database. This ensures that any updates or changes in the metadata estate are promptly captured and processed.
+- Real-time Data Ingestion:  Kafka topics to enable real-time data ingestion from the source database. This ensures that any updates or changes in the metadata estate are promptly captured and processed.
 
-Storage in S3 and RDBMS: The ingested metadata is seamlessly stored in both Amazon S3 and a Relational Database Management System (RDBMS). Storing the data in S3 provides a scalable, cost-effective, and durable storage solution, while the RDBMS enables structured storage and query capabilities.
+- Storage in S3 and RDBMS: The ingested metadata is seamlessly stored in  Amazon S3 and a Relational Database Management System (RDBMS). Storing the data in S3 provides a scalable, cost-effective, and durable storage solution, while the RDBMS enables structured storage and query capabilities.
 
-Spark Streaming: Metasync incorporates Apache Spark for stream processing. Spark Streaming processes data in micro-batches, ensuring low-latency and high-throughput processing of metadata updates. This processing can include data validation, transformation, and enrichment.
+- Spark Streaming: Metasync incorporates Apache Spark for stream processing. Spark Streaming processes data in micro-batches, ensuring low-latency and high-throughput processing of metadata updates. This processing can include data validation, transformation, and enrichment.
 
-Data Flow to NoSQL Cassandra Database: Metasync effectively routes the processed metadata to a NoSQL Cassandra database. Cassandra is chosen for its ability to handle high write loads and provide near real-time access to the ingested metadata. This choice is particularly suitable for use cases involving time-series data or scenarios where eventual consistency is acceptable.
+- Data Flow to NoSQL Cassandra Database: Metasync effectively routes the processed metadata to a NoSQL Cassandra database. Cassandra is chosen for its ability to handle high write loads and provide near real-time access to the ingested metadata. This choice is particularly suitable for use cases involving time-series data or scenarios where eventual consistency is acceptable.
 
-Metadata Transformation and Normalization: Metasync incorporates a set of transformation and normalization processes. These processes are responsible for converting the incoming metadata from its source format to a standardized and normalized format as per the 80-20 rule and other defined business rules. The transformation and normalization steps may include:
 
-Data Standardization: Metasync applies data standardization rules to ensure consistency across various data sources. This involves mapping different data representations to a common schema or taxonomy.
+- Metasync captures and stores the before and after configurations of each query which allow consistent normalization of metadata. A set of transformation and normalization processes can be applied using custom ETL data pipelines to
+convert the incoming metadata from its source format to a standardized and normalized format as per the 80-20 rule and other defined business rules.
 
-Schema Mapping: The platform facilitates the mapping of different schema structures to a unified schema, ensuring that metadata assets are organized and described consistently.
+The transformation and normalization steps may include anything from:
 
-Metadata Enrichment: Metasync can enrich metadata by adding relevant information or annotations, making it more informative and valuable for users.
+- Data Standardization: Metasync applies data standardization rules to ensure consistency across various data sources. This involves mapping different data representations to a common schema or taxonomy.
 
-Data Validation: Data validation rules can be applied to ensure that the metadata meets quality and integrity standards. Invalid or inconsistent data can be flagged for further action.
+- Schema Mapping: The platform facilitates the mapping of different schema structures to a unified schema, ensuring that metadata assets are organized and described consistently.
 
-Normalization of Data Types: If the source metadata includes a variety of data types, Metasync can normalize them to a common set of data types as per the defined standards.
+- Metadata Enrichment: Metasync can enrich metadata by adding relevant information or annotations, making it more informative and valuable for users.
 
-These transformation and normalization processes ensure that the metadata estate is not only ingested in real-time but also structured and organized in a standardized and consistent manner. By applying these steps, Metasync helps organizations maintain data quality and integrity while adhering to the 80-20 rule and any other specific requirements for their metadata estate.
+- Data Validation: Data validation rules can be applied to ensure that the metadata meets quality and integrity standards. Invalid or inconsistent data can be flagged for further action.
+
+These transformation and normalization processes would ensure that the metadata estate is not only ingested in real-time but also structured and organized in a standardized and consistent manner.
+By applying these steps, Metasync helps organizations maintain data quality and integrity while adhering to the 80-20 rule and any other specific requirements for their metadata estate.
 
 ### 3. **(OUTBOUND, INTERNAL)**: Internal Metadata Enrichment with Kafka, Apache Spark, and Cassandra
 
@@ -184,8 +186,11 @@ You can add more Kafka brokers to distribute the load, increase throughput, and 
 
 - OpenTelemetry to trace the path of data from ingestion to consumption, allowing find slow points and bottlenecks [Vaibhav Upreti's Blog](https://vaibhavupreti.me/blog/distributed-tracing-opentelemetry/)
 
+##  Alternatives Considered
 
-## Alternates Considered
+- Rabbit MQ for messaging queues
+- AWS Lambda functions to fetch real time data
+ 
 ## Future Prospects
 
 - Relase in a plugin fashion
