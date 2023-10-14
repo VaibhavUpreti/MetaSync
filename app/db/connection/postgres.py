@@ -4,8 +4,8 @@ import os
 
 def get_db_engine():
     load_dotenv(find_dotenv())
-    username = "postgres"#os.getenv("USERNAME")
-    password = "postgres"#os.getenv("PASSWORD")
+    username = "postgres"
+    password = "postgres"
 
     connection_str = "postgresql+psycopg2://{0}:{1}@postgres_db/metasync_development".format(username, password)
 

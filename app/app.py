@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
-from flask import Flask
-from flask import render_template, request, redirect, url_for, session, flash 
+from flask import Flask render_template, request, redirect, url_for, session, flash 
 from redis import Redis
 from rq import Worker, Queue, Connection
-#Postgres
 import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import bcrypt
-
-#from flask_login import login_user, login_required, logout_user, LoginManager, UserMixin, current_user
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from sqlalchemy.dialects.postgresql import JSON
 import json
@@ -227,6 +223,7 @@ def add_s3_sink(user_id):
     response = requests.post(url, headers=headers, data=data)
     print(response.text)
     return render_template('index.html') 
+
 # Models
 
 class User(db.Model, UserMixin):
@@ -252,16 +249,6 @@ class User(db.Model, UserMixin):
 
     def check_password(self,password):
         return bcrypt.checkpw(password.encode('utf-8'),self.password.encode('utf-8'))
-
-# Integration connections
-# Onect to many relationship
-
-# once connected, solve the 4 problems
-
-# Use another service, kafka for replication and apache spark for real time
-# DOnt run SQL queries direct on DB for batch process, integrate S3 for that
-# for real time look into apache kafka
-# add ability to delete connections too.
 
 class Connection(db.Model, UserMixin):
     __tablename__ = 'connections'

@@ -24,7 +24,6 @@ object StreamToDW {
 
     val aggregatedSales = salesDF.groupBy("productID").agg(sum("amount").as("totalSales"))
 
-    // Write aggregated data to your PostgreSQL database
     val query = aggregatedSales.writeStream
       .outputMode("append")
       .format("jdbc")
