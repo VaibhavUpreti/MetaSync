@@ -5,10 +5,9 @@ MetaSync is a tool that allows real time data ingestion, supports a wide variety
 
 https://github.com/VaibhavUpreti/MetaSync/assets/85568177/ed51645a-b98f-4c4e-bbd0-a12a4b62aeb9
 
-
 ## Architecture
 
-![arch-meta-2](https://github.com/VaibhavUpreti/MetaSync/assets/85568177/8208d958-5872-4483-8da5-93ddd466c175)
+![arch-meta-2](./app/static/arch-meta-2.png)
 
 ## ETL Data Pipeline
 
@@ -67,17 +66,16 @@ By applying these steps, Metasync helps organizations maintain data quality and 
 
 > There are internal enrichment automation requirements towards metadata into Atlan, such that any change in the Atlan entity triggers similar changes to entities connected downstream in lineage from that entity.
 
-Kafka for Real-time Event Streaming: Set up a Kafka cluster to capture events and changes in the Atlan platform, ensuring that all entity changes are published as events.
+- Kafka for Real-time Event Streaming: Kafka cluster to capture events and changes in the Atlan platform, ensuring that all entity changes are published as events.
 
-Apache Spark for Stream Processing: Utilize Apache Spark's Structured Streaming to consume data from Kafka topics and process the metadata changes in real-time. Spark allows for complex transformations and joins.
+- Apache Spark for Stream Processing: Apache Spark's Structured Streaming then  consume data from Kafka topics and process the metadata changes in real-time. Spark allows for complex transformations and joins.
 
-Enrichment Logic: Implement custom enrichment logic to process the metadata changes, ensuring that downstream entities are updated accordingly. This might involve parsing, transformation, and validation.
+- Enrichment Logic: Implement custom enrichment logic to process the metadata changes, ensuring that downstream entities are updated accordingly. This might involve parsing, transformation, and validation. Hence various ETL pipelines can be incorporated.
 
-Cassandra for Metadata Storage: Store the enriched metadata and lineage information in Apache Cassandra, which is optimized for fast writes and real-time data access.
+-  Metadata Storage: Store the metadata and lineage information in S3, Cassandra(optimized for fast writes and real-time data access) and any RDBMS support can be added too.
 
-Automated Updates: Implement logic to trigger updates to downstream entities based on the changes in metadata. Ensure that changes are propagated efficiently to maintain data integrity.
+- Automated Updates: Database transactions trigger updates to downstream entities based on the changes in metadata hence ensure that changes are propagated efficiently to maintain data integrity.
 
-Monitoring and Scaling: Implement monitoring and alerting to ensure the pipeline's reliability and scalability. Use Apache Spark's scaling capabilities to handle increased event load.
 
 
 ### 4. **(OUTBOUND, EXTERNAL)** : External Data Access Security with Kafka, Apache Spark, and S3
@@ -85,21 +83,11 @@ Monitoring and Scaling: Implement monitoring and alerting to ensure the pipeline
 > A customer of Atlan wants to enforce data access security and compliance. They require that as soon as an entity is annotated as PII or GDPR in Atlan, their downstream data tools become aware of it and enforce access control while running SQL queries on the data.
 
 
-Kafka for Real-time Data Annotation: Implement Kafka topics to capture and publish data annotation events when entities are marked as PII or GDPR in Atlan.
+- Kafka topics can capture and publish data annotation events when entities are marked as PII or GDPR in Atlan.
 
-Apache Spark for Real-time Processing: Use Apache Spark Streaming to consume data annotation events and apply access control rules in real-time.
+Metasync uses internal `metasync_production` postgres DB to store user details, this ensures that user can acquire locks on transactions and excercise access control
 
-Access Control Logic: Develop access control logic to ensure that downstream data tools enforce the necessary restrictions when running SQL queries.
-
-Data Storage in S3: Store annotated data and access control policies in an S3 data lake, making it accessible to downstream tools while maintaining a secure and auditable data repository.
-
-Monitoring and Auditing: Implement monitoring and auditing mechanisms to track access control enforcement and ensure compliance with security and privacy regulations.
-
-
-There are many more use-cases similar in nature, where real-time behavior of the Atlan platform is essential. The Atlan team has realized the importance of supporting such capabilities as part of their platform.
-
-
-Your task is to create an architecture that supports the above use cases, . You will need to consider the following aspects as you solve the problem statement:
+- Store annotated data and access control policies in an S3 data lake, making it accessible to downstream tools while maintaining a secure and auditable data repository.
 
 ## Features
 
