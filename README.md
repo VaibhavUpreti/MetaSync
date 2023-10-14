@@ -1,6 +1,6 @@
 # MetaSync
 
-MetaSync is a tool that allows real time data ingestion tool that supports a wide variety of Databases for extracting metadata.
+MetaSync is a tool that allows real time data ingestion, supports a wide variety of Databases for extracting metadata.
 
 https://github.com/VaibhavUpreti/MetaSync/assets/85568177/977801fa-1fd3-4afa-bfe0-e1cdd0c0fda5
 
@@ -8,7 +8,7 @@ https://github.com/VaibhavUpreti/MetaSync/assets/85568177/977801fa-1fd3-4afa-bfe
 
 ![arch-meta-2](https://github.com/VaibhavUpreti/MetaSync/assets/85568177/8208d958-5872-4483-8da5-93ddd466c175)
 
-## ETL Data Pipeline 
+## ETL Data Pipeline
 
 Metasync, a real-time data synchronization system, comes with its own set of best practices to ensure efficient and secure data synchronization.
 
@@ -18,21 +18,21 @@ Metasync, a real-time data synchronization system, comes with its own set of bes
 
 - **Resilience**:  Metasync checks fault tolerance, ensuring uninterrupted data synchronization in the face of failures or disruptions.
 
-
 ## Applications
 
 ### 1. **(INBOUND, EXTERNAL)**: Real Time Notifications
 
 > A customer uses Monte Carlo as a tool for data observability. They have set it up so that Monte Carlo catches any table health or data reliability issues early on. The customer would like Atlan to also become a near-real-time repository of such issues, with relevant metadata attached to respective assets.
 
-![monte-carlo](./app/static/monte-carlo.png)
+**Real Time Kafka Streams**
 
+https://github.com/VaibhavUpreti/MetaSync/assets/85568177/b2d25975-946c-41c2-9b30-77d8621b9249
+
+![monte-carlo](./app/static/monte-carlo.png)
 
 ### 2. **(INBOUND, INTERNAL)**: Gradual Normalization of Metadata with Schema Mappings
 
 > A prospect has a metadata estate spanning 1B metadata assets. While the bulk of this payload is columns in different tables and BI fields (~90% of total), the remaining 10% consists of assets such as databases, schemas, tables, and dashboards. They want to ingest metadata using Atlan’s metadata extraction with an 80-20 rule, where columns become eventually consistent in the metadata lake.
-
-
 
 Metasync leverages a robust architecture and a range of cutting-edge technologies to provide a comprehensive solution to this problem:
 
@@ -68,15 +68,11 @@ There are many more use-cases similar in nature, where real-time behavior of the
 
 Your task is to create an architecture that supports the above use cases, . You will need to consider the following aspects as you solve the problem statement:
 
-
 ## Features
-
 
 ### Real Time Ingestion and Consumption
 
-
 ### Schematics When Ingesting and Consuming Metadata
-
 
 ### MetaDataStore
 
@@ -88,20 +84,15 @@ Which allows storing MetaData later to S3 and NOSQL DB such as Cassandra
 
 ** Authentication:
 
-
 ** MultiTenancy:
 
-
 ### Pre Ingest & Post Consume Transformations Support
-
-
 
 ### Scalability
 
 Horzitonally as well vertically.
 
-
-### Infrastructure 
+### Infrastructure
 
 - Kafka Worker
 
@@ -115,3 +106,9 @@ Horzitonally as well vertically.
 
 - Distributed Tracing(OpenTelemetry): To find slow points and take actions.
 
+[Distributed Tracing](https://vaibhavupreti.me/blog/distributed-tracing-opentelemetry/)
+
+
+## Future Prospects
+
+- Relase in a plugin fashion

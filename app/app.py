@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from flask import Flask render_template, request, redirect, url_for, session, flash 
+from flask import Flask, render_template, request, redirect, url_for, session, flash 
 from redis import Redis
 from rq import Worker, Queue, Connection
 import os
@@ -111,7 +111,7 @@ def dashboard(user_id):
     data = json.loads(result)
     return render_template('dashboard.html', connections=connections, plugins=data)
 
-@app.route('/users/<int:user_id>/connections/new', methods=['POST'])
+@app.route('/users/<int:user_id>/connections/new', methods=['GET','POST'])
 @login_required
 def add_db_connection(user_id):
     if request.method == 'POST':
