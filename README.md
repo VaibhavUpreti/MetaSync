@@ -11,7 +11,7 @@ https://github.com/VaibhavUpreti/MetaSync/assets/85568177/ed51645a-b98f-4c4e-bbd
 
 ## ETL Data Pipeline
 
-Metasync, a real-time data synchronization system, comes with its own set of best practices to ensure efficient and secure data synchronization.
+Metasync, real-time data synchronization tool provides best practices to ensure efficient and secure data synchronization.
 
 - **Low Latency**: Metasync ensures minimal data synchronization latency, guaranteeing real-time updates.
 
@@ -36,6 +36,9 @@ https://github.com/VaibhavUpreti/MetaSync/assets/85568177/27c8954d-9cb5-4c1d-b45
 
 > A prospect has a metadata estate spanning 1B metadata assets. While the bulk of this payload is columns in different tables and BI fields (~90% of total), the remaining 10% consists of assets such as databases, schemas, tables, and dashboards. They want to ingest metadata using Atlan’s metadata extraction with an 80-20 rule, where columns become eventually consistent in the metadata lake.
 
+**Schematics**
+
+![Schematics](./app/static/schematics.png)
 
 - Real-time Data Ingestion:  Kafka topics to enable real-time data ingestion from the source database. This ensures that any updates or changes in the metadata estate are promptly captured and processed.
 
@@ -67,6 +70,10 @@ By applying these steps, Metasync helps organizations maintain data quality and 
 > There are internal enrichment automation requirements towards metadata into Atlan, such that any change in the Atlan entity triggers similar changes to entities connected downstream in lineage from that entity.
 
 - Kafka for Real-time Event Streaming: Kafka cluster to capture events and changes in the Atlan platform, ensuring that all entity changes are published as events.
+
+**Subscribed Kafka topics**
+
+![kafka](./app/static/kafka-topics.png)
 
 - Apache Spark for Stream Processing: Apache Spark's Structured Streaming then  consume data from Kafka topics and process the metadata changes in real-time. Spark allows for complex transformations and joins.
 
