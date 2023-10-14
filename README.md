@@ -2,7 +2,9 @@
 
 MetaSync is a tool that allows real time data ingestion, supports a wide variety of Databases for extracting metadata.
 
-https://github.com/VaibhavUpreti/MetaSync/assets/85568177/977801fa-1fd3-4afa-bfe0-e1cdd0c0fda5
+
+https://github.com/VaibhavUpreti/MetaSync/assets/85568177/ed51645a-b98f-4c4e-bbd0-a12a4b62aeb9
+
 
 ## Architecture
 
@@ -26,7 +28,8 @@ Metasync, a real-time data synchronization system, comes with its own set of bes
 
 **Real Time Kafka Streams**
 
-https://github.com/VaibhavUpreti/MetaSync/assets/85568177/b2d25975-946c-41c2-9b30-77d8621b9249
+https://github.com/VaibhavUpreti/MetaSync/assets/85568177/27c8954d-9cb5-4c1d-b452-e509ea5926ab
+
 
 ![monte-carlo](./app/static/monte-carlo.png)
 
