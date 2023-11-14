@@ -139,6 +139,10 @@ allowing different customers to deploy and use the platform in isolation.
 Implement resource isolation, access control, and secure data segregation for each tenant.
 Use Kubernetes or container orchestration to manage tenant-specific deployments.
 
+Every DB connection belongs to an organisation hence, the org_Admin can enforce a lock to stop the connection and also adjust the security permission of organisation members.
+![arch-metasync12](https://github.com/VaibhavUpreti/MetaSync/assets/85568177/f4fb188c-7062-438c-b8dc-8cba46696552)
+
+
 ### Pre Ingest & Post Consume Transformations Support
 Build a transformation layer in your data pipelines that allows for pre-ingest and post-consume transformations when necessary.
 Use technologies like Apache Beam or Apache Nifi for data transformation and enrichment.
