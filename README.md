@@ -179,7 +179,6 @@ You can add more Kafka brokers to distribute the load, increase throughput, and 
 
 **Spark Master and workers**
 
-- 
 
 **Observability tools**
 
